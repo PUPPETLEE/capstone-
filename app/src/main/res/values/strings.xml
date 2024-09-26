@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">CAPSTON-REWORK</string>
+    <string-array name="car_models">
+        <item>Abart 500</item>
+        <item>Ford Everest</item>
+        <item>Ford Expedition</item>
+        <item>Ford Ranger</item>
+        <item>HONDA CIVIC TYPE R</item>
+        <item>HONDA INTEGRA TYPE R </item>
+        <item>Hilux Consquest</item>
+        <item>Honda fit hybrid</item>
+        <item>Mazda Rx Vision 14</item>
+        <item>Mitsubishi Mirage G4</item>
+        <item>Mitsubishi Tamaraw G4</item>
+        <item>Mitsubishi Tamaraw</item>
+        <item>Mustang Mach 1</item>
+        <item>Suzuki Swift Sport 17</item>
+        <item>Toyota Aqua S</item>
+        <item>Toyota Fortuner 4x4</item>
+        <item>Toyota LandCruiser</item>
+        <item>Volkswagen Polo GTI 14</item>
+        <item>Volskwagen</item>
+        <item>XTrada</item>
+
+
+    </string-array>
+    <string name="game_view_content_description">Game view</string>
+</resources>
