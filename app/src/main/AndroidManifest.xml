@@ -17,16 +17,44 @@
         android:theme="@style/Theme.CAPSTONREWORK"
         tools:targetApi="31">
         <activity
+            android:name=".BudgetInputActivity"
+            android:exported="false"
+            android:parentActivityName=".PaymentOptionsActivity"> <!-- This links MainActivity2 to MainActivity -->
+            <!-- This is required to support older versions -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PaymentOptionsActivity" />
+        </activity>
+        <activity
+            android:name=".PaymentOptionsActivity"
+            android:exported="false"
+            android:parentActivityName=".ImageClassificationActivity"> <!-- Set MainActivity as the parent -->
+
+
+            <!-- Support for older versions of Android -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ImageClassificationActivity" />
+        </activity>
+        <activity
+            android:name=".ArmorLevelSelectionActivity"
+            android:exported="false"
+            android:parentActivityName=".PaymentOptionsActivity"> <!-- Set MainActivity as the parent -->
+
+
+            <!-- Support for older versions of Android -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".PaymentOptionsActivity" />
+        </activity>
+        <activity
             android:name=".ActivityLevelFour"
             android:exported="false" />
         <activity
-            android:name=".ActivityLevelSix"
+            android:name=".LevelSixSummaryActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity2"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".ImageClassificationActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

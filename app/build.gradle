@@ -40,12 +40,17 @@ dependencies {
     implementation libs.tensorflow.lite.support
     implementation libs.tensorflow.lite.metadata
     implementation libs.tensorflow.lite.gpu
+    implementation libs.room.runtime
 
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
 
     implementation libs.tensorflow.lite.support.v030
+
+    // Add PhotoView library here
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+    annotationProcessor libs.room.compiler
 
 
 }

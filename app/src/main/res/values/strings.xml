@@ -1,28 +1,21 @@
 <resources>
     <string name="app_name">CAPSTON-REWORK</string>
     <string-array name="car_models">
-        <item>Abart 500</item>
         <item>Ford Everest</item>
         <item>Ford Expedition</item>
         <item>Ford Ranger</item>
-        <item>HONDA CIVIC TYPE R</item>
-        <item>HONDA INTEGRA TYPE R </item>
-        <item>Hilux Consquest</item>
-        <item>Honda fit hybrid</item>
-        <item>Mazda Rx Vision 14</item>
-        <item>Mitsubishi Mirage G4</item>
-        <item>Mitsubishi Tamaraw G4</item>
-        <item>Mitsubishi Tamaraw</item>
-        <item>Mustang Mach 1</item>
-        <item>Suzuki Swift Sport 17</item>
-        <item>Toyota Aqua S</item>
-        <item>Toyota Fortuner 4x4</item>
+        <item>Hilux Conquest</item>
+        <item>Toyota Fortuner</item>
         <item>Toyota LandCruiser</item>
-        <item>Volkswagen Polo GTI 14</item>
-        <item>Volskwagen</item>
-        <item>XTrada</item>
-
-
     </string-array>
+
+    <string name="vehicle_model">Vehicle Model: %1$s</string>
+    <string name="recommended_armor_level">Recommended Armor Level: %1$s</string>
+    <string name="recommended_cost">Recommended Cost: %1$s</string>
+    <string name="remaining_budget">Remaining Budget: %1$s</string>
+    <string name="first_payment">First Payment (20% in 2 months): %1$s</string>
+    <string name="second_payment">Second Payment (40% in 5 months): %1$s</string>
+    <string name="total_cost">Total Cost: %1$s</string>
+
     <string name="game_view_content_description">Game view</string>
 </resources>
