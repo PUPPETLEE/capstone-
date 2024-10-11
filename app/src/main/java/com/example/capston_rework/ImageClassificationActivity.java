@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -54,6 +55,60 @@ public class ImageClassificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_classification);
+
+        VehicleModelDatabase database = VehicleModelDatabase.getVehicleModelDatabase(getApplicationContext());
+        VehicleArmorCostDao vehicleArmorCostDao = database.vehicleArmorCostDao();
+
+
+        VehicleArmorCost fordRangerPickUp = new VehicleArmorCost(
+                "Ford Ranger",
+                2400000, 180000, 600000, 140000, 15000, 30000, 30000, 80000, 18000, 15000, 3500, 150000, 15000, 60000,
+                2600000, 650000, 800000, 140000, 15000, 30000, 30000, 80000, 18000, 15000, 3500, 150000, 15000, 80000
+        );
+
+        VehicleArmorCost fordEverestSUV = new VehicleArmorCost(
+                "Ford Everest",
+                2400000, 252000, 600000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 60000,
+                2800000, 628000, 900000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 80000
+        );
+
+        VehicleArmorCost toyotaLandCruiserSUV = new VehicleArmorCost(
+                "Toyota LandCruiser",
+                2400000, 252000, 600000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 60000,
+                2800000, 628000, 900000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 80000
+        );
+
+        VehicleArmorCost hiluxConquestPickUp = new VehicleArmorCost(
+                "Hilux Conquest",
+                2400000, 180000, 600000, 140000, 15000, 30000, 30000, 80000, 18000, 15000, 3500, 150000, 15000, 60000,
+                2600000, 650000, 800000, 140000, 15000, 30000, 30000, 80000, 18000, 15000, 3500, 150000, 15000, 80000
+        );
+
+        VehicleArmorCost fordExpeditionSUV = new VehicleArmorCost(
+                "Ford Expedition",
+                2400000, 252000, 600000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 60000,
+                2800000, 628000, 900000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 80000
+        );
+
+        VehicleArmorCost toyotaFortuner = new VehicleArmorCost(
+                "Toyota Fortuner",
+                2400000, 252000, 600000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 60000,
+                2800000, 628000, 900000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 80000
+        );
+
+
+        new Thread(() -> {
+            if(vehicleArmorCostDao.isDatabaseEmpty() != "Ford Ranger"){
+                vehicleArmorCostDao.insert(fordRangerPickUp);
+                vehicleArmorCostDao.insert(fordEverestSUV);
+                vehicleArmorCostDao.insert(toyotaLandCruiserSUV);
+                vehicleArmorCostDao.insert(hiluxConquestPickUp);
+                vehicleArmorCostDao.insert(fordExpeditionSUV);
+                vehicleArmorCostDao.insert(toyotaFortuner);
+            }
+        }).start();
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
