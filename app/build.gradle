@@ -28,6 +28,7 @@ android {
     }
     buildFeatures {
         mlModelBinding true
+        viewBinding true
     }
 }
 
@@ -41,6 +42,8 @@ dependencies {
     implementation libs.tensorflow.lite.metadata
     implementation libs.tensorflow.lite.gpu
     implementation libs.room.runtime
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
 
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit

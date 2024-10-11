@@ -87,21 +87,23 @@ public class BudgetInputActivity extends AppCompatActivity {
 
             double budget = Double.parseDouble(budgetStr);
 
-            if (budget < 70000) {
+            if (budget < 1000000) {
                 Toast.makeText(BudgetInputActivity.this, "Not enough budget.", Toast.LENGTH_LONG).show();
             } else if (budget <= 150000) {
                 Toast.makeText(BudgetInputActivity.this, "Budget: " + budget + " for " + carModelName, Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(BudgetInputActivity.this, LevelFourSummaryActivity.class);
+                Intent intent = new Intent(BudgetInputActivity.this, LevelFourBudgetActivity.class);
                 intent.putExtra("level", "Level 4");
                 intent.putExtra("budget", budget);
+                intent.putExtra("carmodel", carModelName);
                 startActivity(intent);
-            } else if (budget <= 2500000) {
+            } else if (budget <= 3000000) {
                 Toast.makeText(BudgetInputActivity.this, "Budget: " + budget + " for Level 6 materials and costs.", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(BudgetInputActivity.this, LevelSixSummaryActivity.class);
+                Intent intent = new Intent(BudgetInputActivity.this, LevelSixBudgetActivity.class);
                 intent.putExtra("level", "Level 6");
                 intent.putExtra("budget", budget);
+                intent.putExtra("carmodel", carModelName);
                 startActivity(intent);
-            } else {
+            } else if (budget>=6000000) {
                 Toast.makeText(BudgetInputActivity.this, "Budget too high.", Toast.LENGTH_LONG).show();
             }
         });

@@ -1,9 +1,7 @@
 package com.example.capston_rework;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,21 +14,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
-import org.checkerframework.checker.units.qual.A;
+import org.w3c.dom.Text;
 
-import java.util.Arrays;
+public class LevelFourBudgetActivity extends AppCompatActivity {
 
-public class LevelFourSummaryActivity extends AppCompatActivity {
-
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_level_four_summary);
-
+        setContentView(R.layout.activity_level_four_budget);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -38,9 +31,12 @@ public class LevelFourSummaryActivity extends AppCompatActivity {
         });
 
         ListView listView = findViewById(R.id.listViewCosting);
+        TextView textView = findViewById(R.id.total);
+
 
         String carmodel = getIntent().getStringExtra("carmodel");
-        TextView textView = findViewById(R.id.total);
+        double budget = getIntent().getDoubleExtra("budget", 0.0);  // Retrieve as double with default value
+
 
 
         VehicleModelDatabase database = VehicleModelDatabase.getVehicleModelDatabase(getApplicationContext());
@@ -53,9 +49,11 @@ public class LevelFourSummaryActivity extends AppCompatActivity {
             ArrayAdapter<String> costingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,costingArr);
 
             runOnUiThread(()->{
-                listView.setAdapter(costingAdapter);
-                textView.setText("Estimate Total: ₱"+ total);
+                Double ramainingBalance = total - budget;
+                double halftOfRamaingBalance = ramainingBalance /2;
 
+                listView.setAdapter(costingAdapter);
+                textView.setText("Estimate Total: ₱" + total+"\nBudget: ₱"+budget+"\n\nTotal: ₱"+ramainingBalance+"\nChoice of payment\n80% of work: ₱"+halftOfRamaingBalance+"\n100% of work: ₱"+halftOfRamaingBalance);
 
             });
         }).start();
@@ -65,25 +63,25 @@ public class LevelFourSummaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(carmodel.equals("Ford Expedition")){
-                    Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
                     //Intent intent = new Intent(LevelSixSummaryActivity.this);
                 }else if(carmodel.equals("Ford Ranger")){
-                    Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LevelFourSummaryActivity.this, FordRanger.class);
+                    Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(LevelFourBudgetActivity.this, FordRanger.class);
                     startActivity(intent);
                 }else if(carmodel.equals("Hilux Conquest")){
-                    Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
 
                 }else if(carmodel.equals("Toyota Fortuner")){
-                    Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LevelFourSummaryActivity.this, FortunerActivity.class);
+                    Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(LevelFourBudgetActivity.this, FortunerActivity.class);
                     startActivity(intent);
                 }else if(carmodel.equals("Toyata LandCruiser")){
-                    Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LevelFourSummaryActivity.this, LandCruiser.class);
+                    Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(LevelFourBudgetActivity.this, LandCruiser.class);
                     startActivity(intent);
                 }else if(carmodel.equals("Ford Everest")){
-                    Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
 
                 }
 

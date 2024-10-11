@@ -17,6 +17,37 @@
         android:theme="@style/Theme.CAPSTONREWORK"
         tools:targetApi="31">
         <activity
+            android:name=".LandCruiser"
+            android:exported="false" />
+        <activity
+            android:name=".FordRanger"
+            android:exported="false" />
+        <activity
+            android:name=".FortunerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".fortunerToyota"
+            android:exported="false" />
+        <activity
+            android:name=".fortuner4x4"
+            android:exported="false" />
+        <activity
+            android:name=".fordRanger"
+            android:exported="false" />
+        <activity
+            android:name=".landcruiser"
+            android:exported="false"
+            android:theme="@style/Theme.CAPSTONREWORK" />
+        <activity
+            android:name=".fortuner4x4"
+            android:exported="false" />
+        <activity
+            android:name=".LevelFourBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LevelSixBudgetActivity"
+            android:exported="false" />
+        <activity
             android:name=".BudgetInputActivity"
             android:exported="false"
             android:parentActivityName=".PaymentOptionsActivity"> <!-- This links MainActivity2 to MainActivity -->
@@ -48,7 +79,7 @@
                 android:value=".PaymentOptionsActivity" />
         </activity>
         <activity
-            android:name=".ActivityLevelFour"
+            android:name=".LevelFourSummaryActivity"
             android:exported="false" />
         <activity
             android:name=".LevelSixSummaryActivity"
