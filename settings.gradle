@@ -24,3 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CAPSTON-REWORK"
 include ':app'
+

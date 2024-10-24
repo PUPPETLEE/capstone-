@@ -9,9 +9,9 @@
 
     <ListView
         android:id="@+id/listViewCosting"
-        android:layout_width="408dp"
-        android:layout_height="357dp"
-        android:layout_marginTop="56dp"
+        android:layout_width="373dp"
+        android:layout_height="350dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,22 +30,22 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/total"
-        app:layout_constraintVertical_bias="0.041" />
+        app:layout_constraintVertical_bias="0.355" />
 
     <TextView
         android:id="@+id/total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
-        android:textSize="42px"
         android:textColor="#2E2E2E"
+        android:textSize="42px"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintHorizontal_bias="0.093"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listViewCosting"
-        app:layout_constraintVertical_bias="0.158" />
+        app:layout_constraintTop_toBottomOf="@+id/listViewCosting" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

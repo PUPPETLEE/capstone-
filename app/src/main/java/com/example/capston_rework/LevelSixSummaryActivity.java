@@ -15,6 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 public class LevelSixSummaryActivity extends AppCompatActivity {
 
 
@@ -67,15 +68,13 @@ public class LevelSixSummaryActivity extends AppCompatActivity {
 
                }else if(carmodel.equals("Toyota Fortuner")){
                    Toast.makeText(LevelSixSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                   Intent intent = new Intent(LevelSixSummaryActivity.this, FortunerActivity.class);
-                   startActivity(intent);
+
                }else if(carmodel.equals("Toyata LandCruiser")){
                    Toast.makeText(LevelSixSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                   Intent intent = new Intent(LevelSixSummaryActivity.this, LandCruiser.class);
-                   startActivity(intent);
+                   //Intent intent = new Intent(LevelSixSummaryActivity.this, LandCruiser.class);
+                   //startActivity(intent);
                }else if(carmodel.equals("Ford Everest")){
                    Toast.makeText(LevelSixSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-
                }
 
            }

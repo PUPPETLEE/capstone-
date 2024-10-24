@@ -7,14 +7,17 @@
     android:layout_height="match_parent"
     tools:context=".LevelSixSummaryActivity">
 
+
     <ListView
         android:id="@+id/listViewCosting"
-        android:layout_width="404dp"
-        android:layout_height="516dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="376dp"
+        android:layout_height="488dp"
+        android:layout_marginTop="60dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+
+        />
 
     <Button
         android:id="@+id/button"
@@ -31,6 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/listViewCosting"
         app:layout_constraintVertical_bias="0.637" />
 
+
     <TextView
         android:id="@+id/total"
         android:layout_width="212dp"
@@ -38,12 +42,12 @@
         android:fontFamily="sans-serif"
         android:text="TextView"
         android:textColor="#2E2E2E"
-        android:textSize="36px"
+        android:textSize="42px"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listViewCosting"
-        app:layout_constraintVertical_bias="0.432" />
+        app:layout_constraintVertical_bias="0.344" />
 </androidx.constraintlayout.widget.ConstraintLayout>

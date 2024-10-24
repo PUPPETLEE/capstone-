@@ -23,12 +23,19 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class BudgetInputActivity extends AppCompatActivity {
 
     ImageView iv_car_image;
     TextView tv_vehicle_name;
     EditText edt_budget;
     Button btn_submit;
+    private boolean isUpdating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +54,44 @@ public class BudgetInputActivity extends AppCompatActivity {
         edt_budget = findViewById(R.id.edt_budget);
         btn_submit = findViewById(R.id.btn_submit);
 
-        // Set input type for budget EditText to accept only numbers
-        edt_budget.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        // Set input type for budget EditText to accept only numbers and decimal points
+        edt_budget.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
 
-        // Set imeOptions to actionDone for the EditText
-        edt_budget.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        // Add TextWatcher for formatting input with commas and peso sign
+        edt_budget.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (isUpdating) {
+                    return;
+                }
+
+                isUpdating = true;
+
+                // Remove commas and peso sign before formatting
+                String originalString = s.toString().replaceAll("[₱,]", "");
+                if (!originalString.isEmpty()) {
+                    try {
+                        // Format the number with commas and add peso sign
+                        double parsed = Double.parseDouble(originalString);
+                        String formattedString = "₱" + NumberFormat.getNumberInstance(Locale.US).format(parsed);
+
+                        // Update the EditText with the formatted number
+                        edt_budget.setText(formattedString);
+                        edt_budget.setSelection(edt_budget.getText().length());
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace(); // Handle number format exception
+                    }
+                }
+
+                isUpdating = false;
+            }
+        });
 
         // Retrieve shared preferences
         SharedPreferences sharedPref = getSharedPreferences("AppData", MODE_PRIVATE);
@@ -64,22 +104,9 @@ public class BudgetInputActivity extends AppCompatActivity {
             iv_car_image.setImageBitmap(stringToBitmap(carImageStr));
         }
 
-        // Set OnEditorActionListener to handle the Done button press
-        edt_budget.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE ||
-                    (event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-                // Hide the keyboard
-                hideKeyboard();
-                // Clear focus from the EditText
-                edt_budget.clearFocus();
-                return true; // Return true to indicate the action was handled
-            }
-            return false;
-        });
-
         // Submit button handling
         btn_submit.setOnClickListener(v -> {
-            String budgetStr = edt_budget.getText().toString();
+            String budgetStr = edt_budget.getText().toString().replaceAll("[₱,]", ""); // Remove commas and peso sign before parsing
             if (budgetStr.isEmpty()) {
                 Toast.makeText(BudgetInputActivity.this, "Please enter a budget.", Toast.LENGTH_SHORT).show();
                 return;
@@ -90,20 +117,20 @@ public class BudgetInputActivity extends AppCompatActivity {
             if (budget < 1000000) {
                 Toast.makeText(BudgetInputActivity.this, "Not enough budget.", Toast.LENGTH_LONG).show();
             } else if (budget <= 150000) {
-                Toast.makeText(BudgetInputActivity.this, "Budget: " + budget + " for " + carModelName, Toast.LENGTH_LONG).show();
+                Toast.makeText(BudgetInputActivity.this, "Budget: ₱" + budget + " for " + carModelName, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(BudgetInputActivity.this, LevelFourBudgetActivity.class);
                 intent.putExtra("level", "Level 4");
                 intent.putExtra("budget", budget);
                 intent.putExtra("carmodel", carModelName);
                 startActivity(intent);
             } else if (budget <= 3000000) {
-                Toast.makeText(BudgetInputActivity.this, "Budget: " + budget + " for Level 6 materials and costs.", Toast.LENGTH_LONG).show();
+                Toast.makeText(BudgetInputActivity.this, "Budget: ₱" + budget + " for Level 6 materials and costs.", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(BudgetInputActivity.this, LevelSixBudgetActivity.class);
                 intent.putExtra("level", "Level 6");
                 intent.putExtra("budget", budget);
                 intent.putExtra("carmodel", carModelName);
                 startActivity(intent);
-            } else if (budget>=6000000) {
+            } else if (budget >= 6000000) {
                 Toast.makeText(BudgetInputActivity.this, "Budget too high.", Toast.LENGTH_LONG).show();
             }
         });

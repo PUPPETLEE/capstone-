@@ -15,7 +15,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 import org.w3c.dom.Text;
+
+import java.text.DecimalFormat;
 
 public class LevelFourBudgetActivity extends AppCompatActivity {
 
@@ -53,7 +56,9 @@ public class LevelFourBudgetActivity extends AppCompatActivity {
                 double halftOfRamaingBalance = ramainingBalance /2;
 
                 listView.setAdapter(costingAdapter);
-                textView.setText("Estimate Total: ₱" + total+"\nBudget: ₱"+budget+"\n\nTotal: ₱"+ramainingBalance+"\nChoice of payment\n80% of work: ₱"+halftOfRamaingBalance+"\n100% of work: ₱"+halftOfRamaingBalance);
+                DecimalFormat formatter = new DecimalFormat("#,###");
+
+                textView.setText("Estimate Total: ₱" + formatter.format(total)+"\nBudget: ₱"+formatter.format(budget)+"\n\nTotal: ₱"+formatter.format(ramainingBalance)+"\nChoice of payment\n80% of work: ₱"+formatter.format(halftOfRamaingBalance)+"\n100% of work: ₱"+formatter.format(halftOfRamaingBalance));
 
             });
         }).start();
@@ -74,12 +79,11 @@ public class LevelFourBudgetActivity extends AppCompatActivity {
 
                 }else if(carmodel.equals("Toyota Fortuner")){
                     Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LevelFourBudgetActivity.this, FortunerActivity.class);
-                    startActivity(intent);
+
                 }else if(carmodel.equals("Toyata LandCruiser")){
                     Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LevelFourBudgetActivity.this, LandCruiser.class);
-                    startActivity(intent);
+                    //Intent intent = new Intent(LevelFourBudgetActivity.this, LandCruiser.class);
+                    //startActivity(intent);
                 }else if(carmodel.equals("Ford Everest")){
                     Toast.makeText(LevelFourBudgetActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
 

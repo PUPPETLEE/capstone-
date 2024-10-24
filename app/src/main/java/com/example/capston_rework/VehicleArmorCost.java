@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.text.DecimalFormat;
+
 @Entity
 public class VehicleArmorCost {
     @PrimaryKey @NonNull
@@ -98,47 +100,52 @@ public class VehicleArmorCost {
         this.customTax6 = customTax6;
     }
 
+
     public String[] getLvl4Costing(){
+        DecimalFormat formatter = new DecimalFormat("#,###");
+
         String[] costings = {
                 "Vehicle Model: " + this.vehicleModel,
                 "Armor Level: Level 4",
-                "Price of Vehicle: " + this.priceOfVehicle4,
-                "Armor Plate: " + this.armorPlate4,
-                "Armored Glass: " + this.armoredGlass4,
-                "Run Flat: " + this.runFlat4,
-                "Van Door Lock: " + this.vanDoorLock4,
-                "Upholster: " + this.upholster4,
-                "Body Painting: " + this.bodyPainting4,
-                "Under Chassis: " + this.underChassis4,
-                "Door Hinges: " + this.doorHinges4,
-                "Van Door Hinges: " + this.vanDoorHinges4,
-                "Electrician Mechanic: " + this.electricianMechanic4,
-                "Armor Installation: " + this.armorInstallation4,
-                "Equipment: " + this.equipment4,
-                "Custom Tax: " + this.customTax4
+                "Price of Vehicle:  ₱" + formatter.format(this.priceOfVehicle4),
+                "Armor Plate:  ₱" + formatter.format(this.armorPlate4),
+                "Armored Glass:  ₱" + formatter.format(this.armoredGlass4),
+                "Run Flat: " + formatter.format(this.runFlat4),
+                "Van Door Lock:  ₱" + formatter.format(this.vanDoorLock4),
+                "Upholster: ₱" + formatter.format(this.upholster4),
+                "Body Painting:  ₱" + formatter.format(this.bodyPainting4),
+                "Under Chassis:  ₱" + formatter.format(this.underChassis4),
+                "Door Hinges:  ₱"+ formatter.format(this.doorHinges4),
+                "Van Door Hinges:  ₱" + formatter.format(this.vanDoorHinges4),
+                "Electrician Mechanic:  ₱" + formatter.format(this.electricianMechanic4),
+                "Armor Installation:  ₱" + formatter.format(this.armorInstallation4),
+                "Equipment:  ₱" + formatter.format(this.equipment4),
+                "Custom Tax:  ₱" + formatter.format(this.customTax4)
         };
 
         return costings;
     }
 
     public String[] getLvl6Costing(){
+        DecimalFormat formatter = new DecimalFormat("#,###");
+
         String[] costings = {
                 "Vehicle Model: " + this.vehicleModel,
                 "Armor Level: Level 6",
-                "Price of Vehicle: " + this.priceOfVehicle6,
-                "Armor Plate: " + this.armorPlate6,
-                "Armored Glass: " + this.armoredGlass6,
-                "Run Flat: " + this.runFlat6,
-                "Van Door Lock: " + this.vanDoorLock6,
-                "Upholster: " + this.upholster6,
-                "Body Painting: " + this.bodyPainting6,
-                "Under Chassis: " + this.underChassis6,
-                "Door Hinges: " + this.doorHinges6,
-                "Van Door Hinges: " + this.vanDoorHinges6,
-                "Electrician Mechanic: " + this.electricianMechanic6,
-                "Armor Installation: " + this.armorInstallation6,
-                "Equipment: " + this.equipment6,
-                "Custom Tax: " + this.customTax6
+                "Price of Vehicle:  ₱" +formatter.format( this.priceOfVehicle6),
+                "Armor Plate:  ₱" + formatter.format(this.armorPlate6),
+                "Armored Glass:  ₱" + formatter.format(this.armoredGlass6),
+                "Run Flat:  ₱" + formatter.format(this.runFlat6),
+                "Van Door Lock:  ₱" + formatter.format(this.vanDoorLock6),
+                "Upholster:  ₱" + formatter.format(this.upholster6),
+                "Body Painting:  ₱" +formatter.format( this.bodyPainting6),
+                "Under Chassis:  ₱" + formatter.format(this.underChassis6),
+                "Door Hinges:  ₱" +formatter.format( this.doorHinges6),
+                "Van Door Hinges:  ₱" + formatter.format(this.vanDoorHinges6),
+                "Electrician Mechanic:  ₱" + formatter.format(this.electricianMechanic6),
+                "Armor Installation:  ₱" + formatter.format(this.armorInstallation6),
+                "Equipment:  ₱" + formatter.format(this.equipment6),
+                "Custom Tax:  ₱" + formatter.format(this.customTax6)
         };
 
         return costings;

@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import org.checkerframework.checker.units.qual.A;
 
 import java.util.Arrays;
@@ -76,12 +77,11 @@ public class LevelFourSummaryActivity extends AppCompatActivity {
 
                 }else if(carmodel.equals("Toyota Fortuner")){
                     Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LevelFourSummaryActivity.this, FortunerActivity.class);
-                    startActivity(intent);
+
                 }else if(carmodel.equals("Toyata LandCruiser")){
                     Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(LevelFourSummaryActivity.this, LandCruiser.class);
-                    startActivity(intent);
+                    //Intent intent = new Intent(LevelFourSummaryActivity.this, LandCruiser.class);
+                    //startActivity(intent);
                 }else if(carmodel.equals("Ford Everest")){
                     Toast.makeText(LevelFourSummaryActivity.this, "Opening 3d model ", Toast.LENGTH_LONG).show();
 
