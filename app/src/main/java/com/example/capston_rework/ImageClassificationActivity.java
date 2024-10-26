@@ -1,7 +1,5 @@
 package com.example.capston_rework;
 
-
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -44,8 +41,6 @@ public class ImageClassificationActivity extends AppCompatActivity {
     Button camera, gallery, displayInUnityButton;
     ImageView imageView;
     TextView result;
-
-
     ProgressBar progressBar;
     int imageSize = 224;
     private String currentModelName = ""; // This field will store the last recognized model name
@@ -59,7 +54,7 @@ public class ImageClassificationActivity extends AppCompatActivity {
         VehicleModelDatabase database = VehicleModelDatabase.getVehicleModelDatabase(getApplicationContext());
         VehicleArmorCostDao vehicleArmorCostDao = database.vehicleArmorCostDao();
 
-
+        // Create default VehicleArmorCost objects
         VehicleArmorCost fordRangerPickUp = new VehicleArmorCost(
                 "Ford Ranger",
                 2400000, 180000, 600000, 140000, 15000, 30000, 30000, 80000, 18000, 15000, 3500, 150000, 15000, 60000,
@@ -96,24 +91,30 @@ public class ImageClassificationActivity extends AppCompatActivity {
                 2800000, 628000, 900000, 140000, 15000, 45000, 65000, 80000, 18000, 15000, 3500, 250000, 15000, 80000
         );
 
+        // Check if the database is already initialized using SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE);
+        boolean isDatabaseInitialized = sharedPreferences.getBoolean("isDatabaseInitialized", false);
 
-        new Thread(() -> {
-            if(vehicleArmorCostDao.isDatabaseEmpty() != "Ford Ranger"){
+        if (!isDatabaseInitialized) {
+            new Thread(() -> {
                 vehicleArmorCostDao.insert(fordRangerPickUp);
                 vehicleArmorCostDao.insert(fordEverestSUV);
                 vehicleArmorCostDao.insert(toyotaLandCruiserSUV);
                 vehicleArmorCostDao.insert(hiluxConquestPickUp);
                 vehicleArmorCostDao.insert(fordExpeditionSUV);
                 vehicleArmorCostDao.insert(toyotaFortuner);
-            }
-        }).start();
 
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("isDatabaseInitialized", true);
+                editor.apply();
+            }).start();
+        }
 
+        // Set up UI and listeners
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-
         });
 
         camera = findViewById(R.id.picture);
@@ -121,22 +122,18 @@ public class ImageClassificationActivity extends AppCompatActivity {
         result = findViewById(R.id.tv_result);
         imageView = findViewById(R.id.iv_car_image_level6);
 
-        //when camera button clicked it will request a permission
+        // When camera button is clicked, request permission and open the camera
         camera.setOnClickListener(view -> {
-            if (checkSelfPermission(android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 3);
             } else {
                 requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
             }
         });
-        // this is for button gallery so the user can take a choose a photo from gallery
+
+        // When gallery button is clicked, open the gallery
         gallery.setOnClickListener(view -> startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), 1));
-
-
-
-
     }
-
 
     public void classifyImage(Bitmap image) {
         try {
@@ -150,7 +147,7 @@ public class ImageClassificationActivity extends AppCompatActivity {
             int pixel = 0;
             for (int i = 0; i < imageSize; i++) {
                 for (int j = 0; j < imageSize; j++) {
-                    int val = intValues[pixel++]; // RGB
+                    int val = intValues[pixel++];
                     byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255));
                     byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255));
                     byteBuffer.putFloat((val & 0xFF) * (1.f / 255));
@@ -170,41 +167,36 @@ public class ImageClassificationActivity extends AppCompatActivity {
                 }
             }
 
-            float confidenceThreshold = 0.8f; // Confidence threshold
+            float confidenceThreshold = 0.8f;
             if (maxConfidence >= confidenceThreshold) {
-                // Save the model name and image to SharedPreferences
                 currentModelName = getResources().getStringArray(R.array.car_models)[maxPos];
                 SharedPreferences sharedPref = getSharedPreferences("AppData", MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString("CarModelName", currentModelName);
                 editor.putString("CarImage", bitmapToString(image));
                 editor.apply();
-                // progressBar.setProgress((int) (maxConfidence * 100));
-                result.setText(String.format("%s (%.2f%% confidence)", currentModelName, maxConfidence * 100));
-                //displayInUnityButton.setVisibility(View.VISIBLE);
 
-                // Open MainActivity2
+                result.setText(String.format("%s (%.2f%% confidence)", currentModelName, maxConfidence * 100));
+
                 Intent intent = new Intent(ImageClassificationActivity.this, PaymentOptionsActivity.class);
                 startActivity(intent);
-//displayInUnityButton.setText("Display " + currentModelName + " in Unity");
             } else {
                 result.setText(String.format("Try again. Confidence level (%.2f%%) is too low.", maxConfidence * 100));
-                //displayInUnityButton.setVisibility(View.GONE);
                 Toast.makeText(this, "Low confidence. Please try another image.", Toast.LENGTH_SHORT).show();
-
             }
         } catch (IOException e) {
             e.printStackTrace();
             result.setText("Failed to process the image.");
         }
-
     }
+
     private String bitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -216,15 +208,14 @@ public class ImageClassificationActivity extends AppCompatActivity {
                 Uri dat = data.getData();
                 try {
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
-                    image = rotateImageIfRequired(image, dat); // Rotate the image if required
+                    image = rotateImageIfRequired(image, dat);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             if (image != null) {
-                // Automatically detect the orientation and fill the ImageView
-                imageView.setImageBitmap(image); // Set image in ImageView
-                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false); // Resize the image for model classification
+                imageView.setImageBitmap(image);
+                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
                 classifyImage(image);
             }
         }
@@ -233,9 +224,7 @@ public class ImageClassificationActivity extends AppCompatActivity {
     private Bitmap rotateImageIfRequired(Bitmap img, Uri selectedImage) throws IOException {
         InputStream input = getContentResolver().openInputStream(selectedImage);
         ExifInterface ei = new ExifInterface(input);
-
         int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-
         switch (orientation) {
             case ExifInterface.ORIENTATION_ROTATE_90:
                 return rotateImage(img, 90);
@@ -253,7 +242,4 @@ public class ImageClassificationActivity extends AppCompatActivity {
         matrix.postRotate(angle);
         return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
-
-
-
 }

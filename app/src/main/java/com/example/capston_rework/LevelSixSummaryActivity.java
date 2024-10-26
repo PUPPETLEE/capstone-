@@ -15,6 +15,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.text.DecimalFormat;
+
 
 public class LevelSixSummaryActivity extends AppCompatActivity {
 
@@ -48,7 +50,9 @@ public class LevelSixSummaryActivity extends AppCompatActivity {
 
             runOnUiThread(()->{
                 listView.setAdapter(costingAdapter);
-                textView.setText("Estimate Total: ₱"+ total);
+                DecimalFormat formatter = new DecimalFormat("#,###");
+
+                textView.setText("Estimate Total: ₱"+ formatter.format(total));
             });
         }).start();
 

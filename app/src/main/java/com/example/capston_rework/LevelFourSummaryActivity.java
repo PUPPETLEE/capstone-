@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.checkerframework.checker.units.qual.A;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 
 public class LevelFourSummaryActivity extends AppCompatActivity {
@@ -55,7 +56,8 @@ public class LevelFourSummaryActivity extends AppCompatActivity {
 
             runOnUiThread(()->{
                 listView.setAdapter(costingAdapter);
-                textView.setText("Estimate Total: ₱"+ total);
+                DecimalFormat formatter = new DecimalFormat("#,###");
+                textView.setText("Estimate Total: ₱"+ formatter.format(total));
 
 
             });
