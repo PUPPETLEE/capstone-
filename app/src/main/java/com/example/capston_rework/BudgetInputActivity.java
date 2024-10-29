@@ -116,7 +116,7 @@ public class BudgetInputActivity extends AppCompatActivity {
 
             if (budget < 1000000) {
                 Toast.makeText(BudgetInputActivity.this, "Not enough budget.", Toast.LENGTH_LONG).show();
-            } else if (budget <= 150000) {
+            } else if (budget <= 1500000) {
                 Toast.makeText(BudgetInputActivity.this, "Budget: ₱" + budget + " for " + carModelName, Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(BudgetInputActivity.this, LevelFourBudgetActivity.class);
                 intent.putExtra("level", "Level 4");
