@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -37,28 +38,20 @@ import java.nio.ByteOrder;
 
 public class ImageClassificationActivity extends AppCompatActivity {
 
-    Button camera, gallery;
+    Button camera, gallery, displayInUnityButton;
     ImageView imageView;
     TextView result;
     ProgressBar progressBar;
     int imageSize = 224;
-    private String currentModelName = "";
+    private String currentModelName = ""; // This field will store the last recognized model name
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_classification);
 
-        initializeDatabase();
-
-        setupUI();
-
-        // Set up button listeners
-        camera.setOnClickListener(view -> openCamera());
-        gallery.setOnClickListener(view -> openGallery());
-    }
-
-    private void initializeDatabase() { VehicleModelDatabase database = VehicleModelDatabase.getVehicleModelDatabase(getApplicationContext());
+        VehicleModelDatabase database = VehicleModelDatabase.getVehicleModelDatabase(getApplicationContext());
         VehicleArmorCostDao vehicleArmorCostDao = database.vehicleArmorCostDao();
 
         // Create default VehicleArmorCost objects
@@ -117,104 +110,91 @@ public class ImageClassificationActivity extends AppCompatActivity {
             }).start();
         }
 
-    }
-
-    private void setupUI() {
-        camera = findViewById(R.id.picture);
-        gallery = findViewById(R.id.button2);
-        result = findViewById(R.id.tv_result);
-        imageView = findViewById(R.id.iv_car_image_level6);
-
+        // Set up UI and listeners
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    }
 
-    private void openCamera() {
-        if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 3);
-        } else {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-        }
-    }
+        camera = findViewById(R.id.picture);
+        gallery = findViewById(R.id.button2);
+        result = findViewById(R.id.tv_result);
+        imageView = findViewById(R.id.iv_car_image_level6);
 
-    private void openGallery() {
-        startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), 1);
+        // When camera button is clicked, request permission and open the camera
+        camera.setOnClickListener(view -> {
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                startActivityForResult(new Intent(MediaStore.ACTION_IMAGE_CAPTURE), 3);
+            } else {
+                requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+            }
+        });
+
+        // When gallery button is clicked, open the gallery
+        gallery.setOnClickListener(view -> startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI), 1));
     }
 
     public void classifyImage(Bitmap image) {
         try {
             Model model = Model.newInstance(getApplicationContext());
             TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.FLOAT32);
-
             ByteBuffer byteBuffer = ByteBuffer.allocateDirect(4 * imageSize * imageSize * 3);
             byteBuffer.order(ByteOrder.nativeOrder());
-            prepareImageByteBuffer(image, byteBuffer);
+
+            int[] intValues = new int[imageSize * imageSize];
+            image.getPixels(intValues, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
+            int pixel = 0;
+            for (int i = 0; i < imageSize; i++) {
+                for (int j = 0; j < imageSize; j++) {
+                    int val = intValues[pixel++];
+                    byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255));
+                    byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255));
+                    byteBuffer.putFloat((val & 0xFF) * (1.f / 255));
+                }
+            }
 
             inputFeature0.loadBuffer(byteBuffer);
             Model.Outputs outputs = model.process(inputFeature0);
-            float[] confidences = outputs.getOutputFeature0AsTensorBuffer().getFloatArray();
+            TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
+            float[] confidences = outputFeature0.getFloatArray();
+            float maxConfidence = 0;
+            int maxPos = 0;
+            for (int i = 0; i < confidences.length; i++) {
+                if (confidences[i] > maxConfidence) {
+                    maxConfidence = confidences[i];
+                    maxPos = i;
+                }
+            }
 
-            handleClassificationResult(confidences, image);
-            model.close();
+            float confidenceThreshold = 0.7f;
+            if (maxConfidence >= confidenceThreshold) {
+                currentModelName = getResources().getStringArray(R.array.car_models)[maxPos];
+                SharedPreferences sharedPref = getSharedPreferences("AppData", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString("CarModelName", currentModelName);
+                editor.putString("CarImage", bitmapToString(image));
+                editor.apply();
 
+                result.setText(String.format("%s (%.2f%% confidence)", currentModelName, maxConfidence * 100));
+
+                Intent intent = new Intent(ImageClassificationActivity.this, PaymentOptionsActivity.class);
+                startActivity(intent);
+            } else {
+                result.setText(String.format("Try again. Confidence level (%.2f%%) is too low.", maxConfidence * 100));
+                Toast.makeText(this, "Low confidence. Please try another image.", Toast.LENGTH_SHORT).show();
+            }
         } catch (IOException e) {
             e.printStackTrace();
             result.setText("Failed to process the image.");
         }
     }
 
-    private void prepareImageByteBuffer(Bitmap image, ByteBuffer byteBuffer) {
-        int[] intValues = new int[imageSize * imageSize];
-        image.getPixels(intValues, 0, image.getWidth(), 0, 0, image.getWidth(), image.getHeight());
-        int pixel = 0;
-        for (int i = 0; i < imageSize; i++) {
-            for (int j = 0; j < imageSize; j++) {
-                int val = intValues[pixel++];
-                byteBuffer.putFloat(((val >> 16) & 0xFF) * (1.f / 255));
-                byteBuffer.putFloat(((val >> 8) & 0xFF) * (1.f / 255));
-                byteBuffer.putFloat((val & 0xFF) * (1.f / 255));
-            }
-        }
-    }
-
-    private void handleClassificationResult(float[] confidences, Bitmap image) {
-        int maxPos = 0;
-        float maxConfidence = 0;
-        for (int i = 0; i < confidences.length; i++) {
-            if (confidences[i] > maxConfidence) {
-                maxConfidence = confidences[i];
-                maxPos = i;
-            }
-        }
-
-        float confidenceThreshold = 0.8f;
-        if (maxConfidence >= confidenceThreshold) {
-            currentModelName = getResources().getStringArray(R.array.car_models)[maxPos];
-            saveImageClassification(currentModelName, image);
-
-            result.setText(String.format("%s (%.2f%% confidence)", currentModelName, maxConfidence * 100));
-            startActivity(new Intent(this, PaymentOptionsActivity.class));
-        } else {
-            result.setText("Unrecognized object. Please try again.");
-            Toast.makeText(this, "Low confidence. Try another image.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void saveImageClassification(String modelName, Bitmap image) {
-        SharedPreferences sharedPref = getSharedPreferences("AppData", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("CarModelName", modelName);
-        editor.putString("CarImage", bitmapToString(image));
-        editor.apply();
-    }
-
     private String bitmapToString(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-        return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     @Override
@@ -222,22 +202,21 @@ public class ImageClassificationActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && data != null) {
             Bitmap image = null;
-            try {
-                if (requestCode == 3 && data.getExtras() != null) {
-                    image = (Bitmap) data.getExtras().get("data");
-                } else if (requestCode == 1) {
-                    Uri dat = data.getData();
+            if (requestCode == 3 && data.getExtras() != null) {
+                image = (Bitmap) data.getExtras().get("data");
+            } else if (requestCode == 1) {
+                Uri dat = data.getData();
+                try {
                     image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), dat);
                     image = rotateImageIfRequired(image, dat);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                if (image != null) {
-                    image = Bitmap.createScaledBitmap(image, imageSize, imageSize, true);
-                    imageView.setImageBitmap(image);
-                    classifyImage(image);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Image processing failed.", Toast.LENGTH_SHORT).show();
+            }
+            if (image != null) {
+                imageView.setImageBitmap(image);
+                image = Bitmap.createScaledBitmap(image, imageSize, imageSize, false);
+                classifyImage(image);
             }
         }
     }

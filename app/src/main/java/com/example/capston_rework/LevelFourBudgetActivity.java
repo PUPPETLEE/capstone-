@@ -57,7 +57,6 @@ public class LevelFourBudgetActivity extends AppCompatActivity {
 
                 listView.setAdapter(costingAdapter);
                 DecimalFormat formatter = new DecimalFormat("#,###");
-
                 textView.setText("Estimate Total: ₱" + formatter.format(total)+"\nBudget: ₱"+formatter.format(budget)+"\n\nTotal: ₱"+formatter.format(ramainingBalance)+"\nChoice of payment\n80% of work: ₱"+formatter.format(halftOfRamaingBalance)+"\n100% of work: ₱"+formatter.format(halftOfRamaingBalance));
 
             });
