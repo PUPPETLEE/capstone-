@@ -5,6 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#36454F"
+
     tools:context=".PaymentOptionsActivity">
 
 
@@ -27,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="484dp"
-        android:width="350px"
+        android:width="450px"
         android:background="@drawable/custom_button"
         android:paddingLeft="20px"
         android:paddingRight="20px"
@@ -42,7 +44,7 @@
         android:id="@+id/fullpayment_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:width="350px"
+        android:width="450px"
         android:background="@drawable/custom_button"
         android:paddingLeft="20px"
         android:paddingRight="20px"
@@ -60,6 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
+        android:textColor="@color/white"
+        android:textSize="50px"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

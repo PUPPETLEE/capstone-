@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#36454F"
     tools:context=".LevelFourSummaryActivity">
 
 
@@ -12,11 +13,12 @@
         android:id="@+id/listViewCosting"
         android:layout_width="377dp"
         android:layout_height="520dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/white"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintHorizontal_bias="0.47"
         app:layout_constraintStart_toStartOf="parent"
-
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -41,7 +43,7 @@
         android:layout_height="28dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
-        android:textColor="#2E2E2E"
+        android:textColor="@color/white"
         android:textSize="42px"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button"

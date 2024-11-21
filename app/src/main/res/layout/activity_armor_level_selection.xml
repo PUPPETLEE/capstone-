@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#36454F"
+
     tools:context=".ArmorLevelSelectionActivity">
+
+    <!-- Use PhotoView for zoomable image -->
 
     <Button
         android:id="@+id/btn_levelfour"
@@ -19,6 +22,7 @@
         android:text="Level 4"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,7 +32,6 @@
         android:id="@+id/btn_levelsix"
         android:layout_width="120dp"
         android:layout_height="47dp"
-        android:layout_marginBottom="92dp"
         android:background="@drawable/custom_button"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -40,29 +43,51 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.892" />
+        app:layout_constraintVertical_bias="0.409" />
 
-    <!-- Use PhotoView for zoomable image -->
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imageView2"
         android:layout_width="356dp"
         android:layout_height="209dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="64dp"
+        android:src="@drawable/_494c539_121d_483c_aed4_13a1bdb79444"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/_494c539_121d_483c_aed4_13a1bdb79444" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imageView"
         android:layout_width="320dp"
         android:layout_height="195dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/_0188b4b_5f9e_4e0e_9732_114c2d6dfeaa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_levelfour"
-        android:src="@drawable/_0188b4b_5f9e_4e0e_9732_114c2d6dfeaa" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_levelfour" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="221dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="32dp"
+        android:text="Ballistic Metal "
+        android:textColor="@color/white"
+        android:textSize="90px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="143dp"
+        android:layout_height="40dp"
+        android:text="Selection"
+        android:textColor="@color/white"
+        android:textSize="90px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="77dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

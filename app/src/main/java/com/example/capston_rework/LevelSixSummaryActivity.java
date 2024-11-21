@@ -3,6 +3,9 @@ package com.example.capston_rework;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -25,6 +28,9 @@ public class LevelSixSummaryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_level_six_summary);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -42,21 +48,47 @@ public class LevelSixSummaryActivity extends AppCompatActivity {
         VehicleArmorCostDao vehicleArmorCostDao = database.vehicleArmorCostDao();
 
         new Thread(() -> {
+            // Fetch vehicle data from the database
             VehicleArmorCost vehicleArmorCost = vehicleArmorCostDao.findVehicleModel(carmodel);
-            double total = vehicleArmorCost.getLvl6Total();
+            double totalCost = vehicleArmorCost.getLvl6Total();
+            String[] costingDetails = vehicleArmorCost.getLvl6Costing();
 
-            String[] costingArr = vehicleArmorCost.getLvl6Costing();
-            ArrayAdapter<String> costingAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,costingArr);
+            // Use UI thread to update the UI elements
+            runOnUiThread(() -> {
 
-            runOnUiThread(()->{
+                // Set up the ListView with a custom ArrayAdapter
+                ArrayAdapter<String> costingAdapter = new ArrayAdapter<String>(this, R.layout.list_item, R.id.textView, costingDetails) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        // Inflate the custom list item layout
+                        if (convertView == null) {
+                            convertView = getLayoutInflater().inflate(R.layout.list_item, parent, false);
+                        }
+
+                        // Get references to the column name and value TextViews
+                        TextView columnName = convertView.findViewById(R.id.columnName);
+                        TextView columnValue = convertView.findViewById(R.id.columnValue);
+
+                        // Split the data into column name and value
+                        String[] data = costingDetails[position].split(":"); // Example format: "ColumnName:Value"
+                        columnName.setText(data[0].trim()); // Set column name
+                        columnValue.setText(data[1].trim()); // Set value
+
+                        return convertView;
+                    }
+                };
+
                 listView.setAdapter(costingAdapter);
-                DecimalFormat formatter = new DecimalFormat("#,###");
 
-                textView.setText("Estimate Total: ₱"+ formatter.format(total));
+                // Format and display the total cost
+                DecimalFormat formatter = new DecimalFormat("#,###");
+                textView.setText("Estimate Total: ₱" + formatter.format(totalCost));
+
             });
         }).start();
 
-       Button button = findViewById(R.id.button);
+
+        Button button = findViewById(R.id.button);
        button.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {

@@ -5,13 +5,17 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#36454F"
+
     tools:context=".LevelSixBudgetActivity">
 
     <ListView
         android:id="@+id/listViewCosting"
         android:layout_width="369dp"
         android:layout_height="403dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="4dp"
+
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -36,7 +40,7 @@
         android:layout_height="136dp"
         android:fontFamily="sans-serif"
         android:text="TextView"
-        android:textColor="#2E2E2E"
+        android:textColor="@color/white"
         android:textSize="42px"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button"

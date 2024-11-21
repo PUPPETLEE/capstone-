@@ -30,7 +30,14 @@ android {
         mlModelBinding true
         viewBinding true
     }
+
+    viewBinding
+            {
+                enabled=true;
+            }
+
 }
+
 
 dependencies {
 
@@ -54,7 +61,5 @@ dependencies {
     // Add PhotoView library here
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
     annotationProcessor libs.room.compiler
-
-
 
 }
