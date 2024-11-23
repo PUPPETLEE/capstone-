@@ -10,9 +10,9 @@
 
     <ListView
         android:id="@+id/listViewCosting"
-        android:layout_width="377dp"
-        android:layout_height="520dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="353dp"
+        android:layout_height="521dp"
+        android:layout_marginTop="40dp"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"

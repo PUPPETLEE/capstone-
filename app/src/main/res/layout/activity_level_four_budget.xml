@@ -12,9 +12,9 @@
 
     <ListView
         android:id="@+id/listViewCosting"
-        android:layout_width="369dp"
-        android:layout_height="403dp"
-        android:layout_marginTop="4dp"
+        android:layout_width="345dp"
+        android:layout_height="402dp"
+        android:layout_marginTop="40dp"
 
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,9 +46,9 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.262"
+        app:layout_constraintHorizontal_bias="0.412"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listViewCosting"
-        app:layout_constraintVertical_bias="0.357" />
+        app:layout_constraintVertical_bias="0.344" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
